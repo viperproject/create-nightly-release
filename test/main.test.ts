@@ -38,5 +38,5 @@ test('test runs', () => {
     return;
   }
   // an exception is expected as the GITHUB_TOKEN is not set
-  assert.fail("main.js did not reject missing GITHUB_TOKEN");
+  assert.fail('main.js did not reject missing GITHUB_TOKEN');
 });
