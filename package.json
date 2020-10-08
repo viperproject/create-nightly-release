@@ -1,45 +1,51 @@
 {
-  "name": "typescript-action",
-  "version": "0.0.0",
-  "private": true,
-  "description": "TypeScript template action",
+  "name": "create-nightly-release",
+  "version": "1.0.0",
+  "description": "GitHub action to create a new pre-release and delete old pre-releases created by this action",
   "main": "lib/main.js",
   "scripts": {
     "build": "tsc",
     "format": "prettier --write **/*.ts",
     "format-check": "prettier --check **/*.ts",
     "lint": "eslint src/**/*.ts",
-    "package": "ncc build --source-map --license licenses.txt",
+    "package": "npm run package-main && npm run package-post",
+    "package-main": "ncc build src/main.ts --source-map --license licenses.txt --out dist/main",
+    "package-post": "ncc build src/post.ts --source-map --license licenses.txt --out dist/post",
     "test": "jest",
     "all": "npm run build && npm run format && npm run lint && npm run package && npm test"
   },
   "repository": {
     "type": "git",
-    "url": "git+https://github.com/actions/typescript-action.git"
+    "url": "git+https://github.com/viperproject/create-nightly-release.git"
   },
   "keywords": [
+    "nightly",
+    "release",
     "actions",
-    "node",
-    "setup"
+    "node"
   ],
-  "author": "",
-  "license": "MIT",
+  "author": {
+    "name": "Chair of Programming Methodology, ETH Zurich"
+  },
+  "license": "MPL-2.0",
   "dependencies": {
-    "@actions/core": "^1.2.6"
+    "@actions/core": "^1.2.6",
+    "@actions/github": "^4.0.0"
   },
   "devDependencies": {
-    "@types/jest": "^26.0.10",
-    "@types/node": "^14.10.0",
-    "@typescript-eslint/parser": "^3.10.1",
-    "@vercel/ncc": "^0.23.0",
-    "eslint": "^7.8.1",
+    "@octokit/core": "^3.1.2",
+    "@types/jest": "^26.0.14",
+    "@types/node": "^14.11.5",
+    "@typescript-eslint/parser": "^4.4.0",
+    "@vercel/ncc": "^0.24.1",
+    "eslint": "^7.10.0",
     "eslint-plugin-github": "^4.1.1",
-    "eslint-plugin-jest": "^23.20.0",
-    "jest": "^24.9.0",
-    "jest-circus": "^26.4.2",
+    "eslint-plugin-jest": "^24.1.0",
+    "jest": "^26.5.2",
+    "jest-circus": "^26.5.2",
     "js-yaml": "^3.14.0",
-    "prettier": "2.1.1",
-    "ts-jest": "^24.3.0",
-    "typescript": "^4.0.2"
+    "prettier": "2.1.2",
+    "ts-jest": "^26.4.1",
+    "typescript": "^4.0.3"
   }
 }

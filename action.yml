@@ -1,11 +1,40 @@
-name: 'Your name here'
-description: 'Provide a description here'
-author: 'Your name or organization here'
+# This Source Code Form is subject to the terms of the Mozilla Public
+# License, v. 2.0. If a copy of the MPL was not distributed with this
+# file, You can obtain one at http://mozilla.org/MPL/2.0/.
+#
+# Copyright (c) 2011-2020 ETH Zurich.
+
+name: 'create-nightly-release'
+description: 'GitHub action to create a new pre-release and delete old pre-releases created by this action'
 inputs:
-  milliseconds: # change this
+  tag_name:
+    description: 'The name of the tag.'
     required: true
-    description: 'input description here'
-    default: 'default value if applicable'
+  release_name:
+    description: 'The name of the release. For example, `Release v1.0.1`'
+    required: true
+  body:
+    description: 'Text describing the release.'
+    required: false
+  keep_num:
+    description: 'Number of pre-releases that should be kept in addition to the newly created one.'
+    required: false
+    default: '0'
+  keep_tags:
+    description: 'Specifies whether tags should be deleted if the corresponding release is deleted.'
+    required: false
+    default: false
+outputs:
+  id:
+    description: 'The ID of the created Release'
+  html_url:
+    description: 'The URL users can navigate to in order to view the release'
+  upload_url:
+    description: 'The URL for uploading assets to the release'
 runs:
   using: 'node12'
-  main: 'dist/index.js'
+  main: 'dist/main/index.js'
+  post: 'dist/post/index.js'
+branding:
+  icon: 'tag'
+  color: 'gray-dark'

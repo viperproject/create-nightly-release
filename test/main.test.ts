@@ -20,15 +20,23 @@
 // OUT OF OR IN CONNECTION WITH THE SOFTWARE OR THE USE OR OTHER DEALINGS IN
 // THE SOFTWARE.
 
-{
-  "compilerOptions": {
-    "target": "es6",                          /* Specify ECMAScript target version: 'ES3' (default), 'ES5', 'ES2015', 'ES2016', 'ES2017', 'ES2018', 'ES2019' or 'ESNEXT'. */
-    "module": "commonjs",                     /* Specify module code generation: 'none', 'commonjs', 'amd', 'system', 'umd', 'es2015', or 'ESNext'. */
-    "outDir": "./lib",                        /* Redirect output structure to the directory. */
-    "rootDir": "./src",                       /* Specify the root directory of input files. Use to control the output directory structure with --outDir. */
-    "strict": true,                           /* Enable all strict type-checking options. */
-    "noImplicitAny": true,                    /* Raise error on expressions and declarations with an implied 'any' type. */
-    "esModuleInterop": true                   /* Enables emit interoperability between CommonJS and ES Modules via creation of namespace objects for all imports. Implies 'allowSyntheticDefaultImports'. */
-  },
-  "exclude": ["node_modules", "**/*.test.ts"]
-}
+import * as process from 'process';
+import * as cp from 'child_process';
+import * as path from 'path';
+import * as assert from 'assert';
+
+// shows how the runner will run a javascript action with env / stdout protocol
+test('test runs', () => {
+  process.env['INPUT_TAG_NAME'] = 'Bla';
+  const ip = path.join(__dirname, '..', 'lib', 'main.js');
+  const options: cp.ExecSyncOptions = {
+    env: process.env
+  };
+  try {
+    cp.execSync(`node ${ip}`, options);
+  } catch (ex) {
+    return;
+  }
+  // an exception is expected as the GITHUB_TOKEN is not set
+  assert.fail("main.js did not reject missing GITHUB_TOKEN");
+});
