@@ -16,6 +16,9 @@ inputs:
   body:
     description: 'Text describing the release.'
     required: false
+  body_path:
+    description: 'Path to a file whose content should be used as release body.'
+    required: false
   keep_num:
     description: 'Number of pre-releases that should be kept in addition to the newly created one.'
     required: false

@@ -23,6 +23,7 @@ GitHub action to create a new pre-release and delete old pre-releases created by
 - `tag_name`: The name of the tag. (required)
 - `release_name`: The name of the release. For example, 'Release v1.0.1'. (required)
 - `body`: Text describing the release. (optional)
+- `body_path`: Path to a file whose content should be used as release body. (optional)
 - `keep_num`: Number of pre-releases that should be kept in addition to the newly created one. E.g. '0' deletes all previous pre-releases created by this action except the one that was just created. (optional, default: 0)
 - `keep_tags`: Specifies whether tags should be deleted if the corresponding release is deleted. (optional, default: false)
 
@@ -39,5 +40,10 @@ GitHub action to create a new pre-release and delete old pre-releases created by
 5. Commit: `git commit -m "<commit message>`
 6. Push release branch: `git push`
 7. Create a GitHub release with a tag, e.g. `v1.0.0`
+8. Move the major tag (e.g. `v1`) to the latest release:
+```
+git tag -fa v1 -m "Update v1 tag"
+git push origin v1 --force
+```
 
 [More information](https://github.com/actions/toolkit/blob/master/docs/action-versioning.md)
