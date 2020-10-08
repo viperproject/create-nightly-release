@@ -5849,9 +5849,11 @@ var __awaiter = (this && this.__awaiter) || function (thisArg, _arguments, P, ge
 Object.defineProperty(exports, "__esModule", ({ value: true }));
 const core = __importStar(__webpack_require__(186));
 const github = __importStar(__webpack_require__(438));
+const fs = __importStar(__webpack_require__(747));
 const constants_1 = __webpack_require__(42);
 function run() {
     return __awaiter(this, void 0, void 0, function* () {
+        // partially taken from https://github.com/actions/create-release
         try {
             const token = process.env.GITHUB_TOKEN;
             if (!token) {
@@ -5872,6 +5874,16 @@ function run() {
             const draft = false;
             const prerelease = true;
             const commitish = github.context.sha;
+            const bodyPath = core.getInput('body_path', { required: false });
+            let bodyFileContent = null;
+            if (bodyPath !== '' && !!bodyPath) {
+                try {
+                    bodyFileContent = fs.readFileSync(bodyPath, { encoding: 'utf8' });
+                }
+                catch (error) {
+                    core.setFailed(error.message);
+                }
+            }
             // Create a release
             // API Documentation: https://developer.github.com/v3/repos/releases/#create-a-release
             // Octokit Documentation: https://octokit.github.io/rest.js/#octokit-routes-repos-create-release
@@ -5880,7 +5892,7 @@ function run() {
                 repo,
                 tag_name: tag,
                 name: releaseName,
-                body: constants_1.INVISIBLE_BODY_PREAMBLE() + body,
+                body: constants_1.INVISIBLE_BODY_PREAMBLE() + (bodyFileContent || body),
                 draft,
                 prerelease,
                 target_commitish: commitish
