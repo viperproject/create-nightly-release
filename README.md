@@ -1,6 +1,8 @@
-<a href="https://github.com/viperproject/create-nightly-release/actions"><img alt="typescript-action status" src="https://github.com/viperproject/create-nightly-release/workflows/build-test/badge.svg"></a>
-
 # create-nightly-release
+
+[![Test Status](https://github.com/viperproject/create-nightly-release/workflows/build-test/badge.svg?branch=main)](https://github.com/viperproject/create-nightly-release/actions?query=workflow%3Abuild-test+branch%3Amain)
+[![License: MPL 2.0](https://img.shields.io/badge/License-MPL%202.0-brightgreen.svg)](./LICENSE)
+
 GitHub action to create a new pre-release and delete old pre-releases created by this action.
 
 ## Usage
