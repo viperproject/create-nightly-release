@@ -35,8 +35,10 @@ GitHub action to create a new pre-release and delete old pre-releases created by
 - `upload_url`: The URL for uploading assets to the release
 
 ## Create a new Release
-1. Checkout this repository
-2. Checkout or create a release branch (replace `v1`): `git checkout releases/v1` or `git checkout -b releases/v1`
+1. Checkout this repository and pull remote changes `git pull`
+2. Checkout or create a release branch (replace `v1` with the major version number): 
+  - `git checkout releases/v1; git pull origin main` or 
+  - `git checkout -b releases/v1`
 3. Run `rm -rf dist; rm -rf node_modules; npm ci`
 4. Run `npm run package`
 5. Force add the dist folder: `git add -f dist`
