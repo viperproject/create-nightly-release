@@ -5,8 +5,8 @@
 // Copyright (c) 2011-2020 ETH Zurich.
 
 import * as core from '@actions/core';
-import * as github from '@actions/github';
 import * as fs from 'fs';
+import * as github from '@actions/github';
 import {INVISIBLE_BODY_PREAMBLE} from './constants';
 
 async function run(): Promise<void> {
@@ -42,14 +42,18 @@ async function run(): Promise<void> {
       try {
         bodyFileContent = fs.readFileSync(bodyPath, {encoding: 'utf8'});
       } catch (error) {
-        core.setFailed(error.message);
+        if (error instanceof Error) {
+          core.setFailed(error);
+        } else {
+          core.setFailed(`unknown error type ${error}`);
+        }
       }
     }
 
     // Create a release
     // API Documentation: https://developer.github.com/v3/repos/releases/#create-a-release
     // Octokit Documentation: https://octokit.github.io/rest.js/#octokit-routes-repos-create-release
-    const createReleaseResponse = await octokit.repos.createRelease({
+    const createReleaseResponse = await octokit.rest.repos.createRelease({
       owner,
       repo,
       tag_name: tag,
@@ -70,7 +74,11 @@ async function run(): Promise<void> {
     core.setOutput('html_url', htmlUrl);
     core.setOutput('upload_url', uploadUrl);
   } catch (error) {
-    core.setFailed(error.message);
+    if (error instanceof Error) {
+      core.setFailed(error);
+    } else {
+      core.setFailed(`unknown error type ${error}`);
+    }
   }
 }
 
