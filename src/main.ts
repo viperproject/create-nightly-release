@@ -5,8 +5,8 @@
 // Copyright (c) 2011-2020 ETH Zurich.
 
 import * as core from '@actions/core';
-import * as github from '@actions/github';
 import * as fs from 'fs';
+import * as github from '@actions/github';
 import {INVISIBLE_BODY_PREAMBLE} from './constants';
 
 async function run(): Promise<void> {
@@ -41,8 +41,12 @@ async function run(): Promise<void> {
     if (bodyPath !== '' && !!bodyPath) {
       try {
         bodyFileContent = fs.readFileSync(bodyPath, {encoding: 'utf8'});
-      } catch (error: any) {
-        core.setFailed(error.message);
+      } catch (error) {
+        if (error instanceof Error) {
+          core.setFailed(error);
+        } else {
+          core.setFailed(`unknown error type ${error}`);
+        }
       }
     }
 
@@ -69,8 +73,12 @@ async function run(): Promise<void> {
     core.setOutput('id', releaseId);
     core.setOutput('html_url', htmlUrl);
     core.setOutput('upload_url', uploadUrl);
-  } catch (error: any) {
-    core.setFailed(error.message);
+  } catch (error) {
+    if (error instanceof Error) {
+      core.setFailed(error);
+    } else {
+      core.setFailed(`unknown error type ${error}`);
+    }
   }
 }
 

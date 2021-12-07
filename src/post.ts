@@ -6,7 +6,7 @@
 
 import * as core from '@actions/core';
 import * as github from '@actions/github';
-import { GitHub } from '@actions/github/lib/utils';
+import {GitHub} from '@actions/github/lib/utils';
 import {INVISIBLE_BODY_PREAMBLE} from './constants';
 
 async function run(): Promise<void> {
@@ -40,7 +40,11 @@ async function run(): Promise<void> {
       // remove the first `keep` many releases:
       .filter((_, index) => index > keepNum)
       // remove releases not created by this action:
-      .filter(release => release.body != null && release.body.startsWith(INVISIBLE_BODY_PREAMBLE()))
+      .filter(
+        release =>
+          release.body != null &&
+          release.body.startsWith(INVISIBLE_BODY_PREAMBLE())
+      )
       // reverse releases to start deleting the oldest one:
       .reverse();
 
@@ -49,8 +53,12 @@ async function run(): Promise<void> {
       core.info(`Release '${release.name}' was successfully deleted`);
     }
     core.info(`${releasesToBeDeleted.length} release(s) have been deleted`);
-  } catch (error: any) {
-    core.setFailed(error.message);
+  } catch (error) {
+    if (error instanceof Error) {
+      core.setFailed(error);
+    } else {
+      core.setFailed(`unknown error type ${error}`);
+    }
   }
 }
 
