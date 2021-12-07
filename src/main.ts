@@ -41,7 +41,7 @@ async function run(): Promise<void> {
     if (bodyPath !== '' && !!bodyPath) {
       try {
         bodyFileContent = fs.readFileSync(bodyPath, {encoding: 'utf8'});
-      } catch (error) {
+      } catch (error: any) {
         core.setFailed(error.message);
       }
     }
@@ -49,7 +49,7 @@ async function run(): Promise<void> {
     // Create a release
     // API Documentation: https://developer.github.com/v3/repos/releases/#create-a-release
     // Octokit Documentation: https://octokit.github.io/rest.js/#octokit-routes-repos-create-release
-    const createReleaseResponse = await octokit.repos.createRelease({
+    const createReleaseResponse = await octokit.rest.repos.createRelease({
       owner,
       repo,
       tag_name: tag,
@@ -69,7 +69,7 @@ async function run(): Promise<void> {
     core.setOutput('id', releaseId);
     core.setOutput('html_url', htmlUrl);
     core.setOutput('upload_url', uploadUrl);
-  } catch (error) {
+  } catch (error: any) {
     core.setFailed(error.message);
   }
 }

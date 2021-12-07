@@ -6,7 +6,7 @@
 
 import * as core from '@actions/core';
 import * as github from '@actions/github';
-import {Octokit} from '@octokit/core';
+import { GitHub } from '@actions/github/lib/utils';
 import {INVISIBLE_BODY_PREAMBLE} from './constants';
 
 async function run(): Promise<void> {
@@ -29,7 +29,7 @@ async function run(): Promise<void> {
       core.getInput('keep_tags', {required: false}) === 'true';
 
     // see https://octokit.github.io/rest.js/v18#repos-list-releases
-    const {data: releases} = await octokit.repos.listReleases({
+    const {data: releases} = await octokit.rest.repos.listReleases({
       owner,
       repo
     });
@@ -40,7 +40,7 @@ async function run(): Promise<void> {
       // remove the first `keep` many releases:
       .filter((_, index) => index > keepNum)
       // remove releases not created by this action:
-      .filter(release => release.body.startsWith(INVISIBLE_BODY_PREAMBLE()))
+      .filter(release => release.body != null && release.body.startsWith(INVISIBLE_BODY_PREAMBLE()))
       // reverse releases to start deleting the oldest one:
       .reverse();
 
@@ -49,13 +49,13 @@ async function run(): Promise<void> {
       core.info(`Release '${release.name}' was successfully deleted`);
     }
     core.info(`${releasesToBeDeleted.length} release(s) have been deleted`);
-  } catch (error) {
+  } catch (error: any) {
     core.setFailed(error.message);
   }
 }
 
 async function deleteRelease(
-  octokit: Octokit,
+  octokit: InstanceType<typeof GitHub>,
   owner: string,
   repo: string,
   release: Release,
@@ -64,7 +64,7 @@ async function deleteRelease(
   // all assets have to be deleted first:
   for (const asset of release.assets) {
     // see https://octokit.github.io/rest.js/v18#repos-delete-release-asset
-    await octokit.repos.deleteReleaseAsset({
+    await octokit.rest.repos.deleteReleaseAsset({
       owner,
       repo,
       asset_id: asset.id
@@ -72,7 +72,7 @@ async function deleteRelease(
   }
   // then delete the actual release:
   // see https://octokit.github.io/rest.js/v18#repos-delete-release
-  await octokit.repos.deleteRelease({
+  await octokit.rest.repos.deleteRelease({
     owner,
     repo,
     release_id: release.id
@@ -80,7 +80,7 @@ async function deleteRelease(
   if (!keepTags) {
     // delete the associated tag:
     // see https://octokit.github.io/rest.js/v18#git-delete-ref
-    await octokit.git.deleteRef({
+    await octokit.rest.git.deleteRef({
       owner,
       repo,
       ref: `tags/${release.tag_name}`
@@ -90,8 +90,8 @@ async function deleteRelease(
 
 interface Release {
   id: number;
-  name: string;
-  body: string;
+  name: string | null;
+  body?: string | null | undefined;
   tag_name: string;
   assets: Asset[];
 }
