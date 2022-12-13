@@ -39,13 +39,14 @@ GitHub action to create a new pre-release and delete old pre-releases created by
 2. Checkout or create a release branch (replace `v1` with the major version number): 
   - `git checkout releases/v1; git pull origin main` or 
   - `git checkout -b releases/v1`
-3. Run `rm -rf dist; rm -rf node_modules; npm ci`
-4. Run `npm run package`
-5. Force add the dist folder: `git add -f dist`
-6. Commit: `git commit -m "<commit message>`
-7. Push release branch: `git push`
-8. Create a GitHub release with a tag, e.g. `v1.0.0`
-9. Move the major tag (e.g. `v1`) to the latest release:
+3. Run `npm version <newversion>` to set the version number
+4. Run `rm -rf dist; rm -rf node_modules; npm ci`
+5. Run `npm run package`
+6. Force add the dist folder: `git add -f dist`
+7. Commit: `git commit -m "<commit message>`
+8. Push release branch: `git push`
+9. Create a GitHub release with a tag, e.g. `v1.0.0`
+10. Move the major tag (e.g. `v1`) to the latest release:
 ```
 git tag -fa v1 -m "Update v1 tag"
 git push origin v1 --force
