@@ -24,6 +24,7 @@ name: 'build-test'
 on: # rebuild any PRs and main branch changes
   pull_request:
   push:
+  merge_group:
 
 jobs:
   build: # make sure build/ci work properly
