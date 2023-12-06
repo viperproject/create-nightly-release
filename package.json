@@ -1,6 +1,6 @@
 {
   "name": "create-nightly-release",
-  "version": "1.1.10",
+  "version": "1.1.11",
   "description": "GitHub action to create a new pre-release and delete old pre-releases created by this action",
   "main": "lib/main.js",
   "scripts": {
