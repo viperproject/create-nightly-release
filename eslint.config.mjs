@@ -1,7 +1,6 @@
 import jest from "eslint-plugin-jest";
 import typescriptEslint from "@typescript-eslint/eslint-plugin";
 import stylistic from '@stylistic/eslint-plugin';
-import stylisticTs from '@stylistic/eslint-plugin-ts'
 import globals from "globals";
 import tsParser from "@typescript-eslint/parser";
 import path from "node:path";
@@ -23,7 +22,6 @@ export default [{
         jest,
         "@typescript-eslint": typescriptEslint,
         '@stylistic': stylistic,
-        '@stylistic/ts': stylisticTs
     },
 
     languageOptions: {
@@ -63,7 +61,7 @@ export default [{
             allowExpressions: true,
         }],
 
-        "@stylistic/func-call-spacing": ["error", "never"],
+        "@/func-call-spacing": ["error", "never"],
         "@typescript-eslint/no-array-constructor": "error",
         "@typescript-eslint/no-empty-interface": "error",
         "@typescript-eslint/no-explicit-any": "error",
@@ -84,7 +82,7 @@ export default [{
         "@typescript-eslint/promise-function-async": "error",
         "@typescript-eslint/require-array-sort-compare": "error",
         "@typescript-eslint/restrict-plus-operands": "error",
-        "@stylistic/ts/semi": ["error", "always"],
+        "@stylistic/semi": ["error", "always"],
         "@stylistic/type-annotation-spacing": "error",
         "@typescript-eslint/unbound-method": "error",
     },
