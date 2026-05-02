@@ -35,7 +35,7 @@ outputs:
   upload_url:
     description: 'The URL for uploading assets to the release'
 runs:
-  using: 'node12'
+  using: 'node20'
   main: 'dist/main/index.js'
   post: 'dist/post/index.js'
 branding:

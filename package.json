@@ -29,8 +29,8 @@
   },
   "license": "MPL-2.0",
   "dependencies": {
-    "@actions/core": "^3.0.0",
-    "@actions/github": "^9.0.0"
+    "@actions/core": "^2.0.3",
+    "@actions/github": "^8.0.1"
   },
   "devDependencies": {
     "@octokit/core": "^7.0.6",
